@@ -4,6 +4,11 @@ import org.apache.commons.collections4.MultiSet;
 import org.apache.commons.collections4.multiset.HashMultiSet;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Implementation of WordCounter.
+ *
+ * Word counts internally are stored in a {@link org.apache.commons.collections4.MultiSet}.
+ */
 public class WordCounterImpl implements WordCounter {
 
     private MultiSet<String> wordCounter;
@@ -12,6 +17,9 @@ public class WordCounterImpl implements WordCounter {
         wordCounter = new HashMultiSet<>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addWord(String word) {
 
@@ -22,6 +30,9 @@ public class WordCounterImpl implements WordCounter {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getWordCount(String word) {
         return wordCounter.getCount(word);
