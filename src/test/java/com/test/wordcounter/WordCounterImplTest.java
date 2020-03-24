@@ -52,7 +52,7 @@ public class WordCounterImplTest {
 
         WordCounter wordCounter = new WordCounterImpl(translator);
 
-        String expectedWord = argumentsAccessor.getString(0);
+        String word = argumentsAccessor.getString(0);
         int expectedWordCount = argumentsAccessor.getInteger(1);
 
         wordCounter.addWord(argumentsAccessor.getString(2));
@@ -60,8 +60,32 @@ public class WordCounterImplTest {
         wordCounter.addWord(argumentsAccessor.getString(4));
         wordCounter.addWord(argumentsAccessor.getString(5));
 
-        int actualWordCount = wordCounter.getWordCount(expectedWord);
+        int actualWordCount = wordCounter.getWordCount(word);
 
-        assertEquals(expectedWordCount, actualWordCount, "Word count is incorrect.");
+        assertEquals(expectedWordCount, actualWordCount, "Word count is incorrect for " + word);
     }
+
+    @ParameterizedTest
+    @CsvSource({"flower,3,flower,flor,blume", "glass,2,vaso,glas"})
+    void shouldGetWordCountNonEnglishWords(final ArgumentsAccessor argumentsAccessor) {
+        WordCounter wordCounter = new WordCounterImpl(translator);
+
+        String englishWord = argumentsAccessor.getString(0);
+        int expectedWordCount = argumentsAccessor.getInteger(1);
+
+        //add words
+        for (int i = 2; i < argumentsAccessor.size(); i++) {
+            String word = argumentsAccessor.getString(i);
+            when(translator.translate(word)).thenReturn(englishWord);
+            wordCounter.addWord(word);
+        }
+
+        //verify count is correct for each of translated words
+        for (int i = 2; i < argumentsAccessor.size(); i++) {
+            String word = argumentsAccessor.getString(i);
+            int actualWordCount = wordCounter.getWordCount(word);
+            assertEquals(expectedWordCount, actualWordCount, "Word count is incorrect for " + word);
+        }
+    }
+
 }

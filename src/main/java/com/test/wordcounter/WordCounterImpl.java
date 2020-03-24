@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
  * Implementation of WordCounter.
  *
  * Word counts internally are stored in a {@link org.apache.commons.collections4.MultiSet}.
+ *
+ * Note: The class is not ThreadSafe.
  */
 public class WordCounterImpl implements WordCounter {
 
@@ -37,6 +39,6 @@ public class WordCounterImpl implements WordCounter {
      */
     @Override
     public int getWordCount(final String word) {
-        return wordCounter.getCount(word);
+        return wordCounter.getCount(translator.translate(word));
     }
 }
