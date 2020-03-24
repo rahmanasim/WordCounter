@@ -11,9 +11,12 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class WordCounterImpl implements WordCounter {
 
+    private Translator translator;
+
     private MultiSet<String> wordCounter;
 
-    public WordCounterImpl() {
+    public WordCounterImpl(final Translator translator) {
+        this.translator = translator;
         wordCounter = new HashMultiSet<>();
     }
 
@@ -21,10 +24,9 @@ public class WordCounterImpl implements WordCounter {
      * {@inheritDoc}
      */
     @Override
-    public void addWord(String word) {
-
+    public void addWord(final String word) {
         if (StringUtils.isAlpha(word)) {
-            wordCounter.add(word);
+            wordCounter.add(translator.translate(word));
         } else {
             throw new IllegalArgumentException("Word cannot contain non-alphabets: " + word);
         }
@@ -34,7 +36,7 @@ public class WordCounterImpl implements WordCounter {
      * {@inheritDoc}
      */
     @Override
-    public int getWordCount(String word) {
+    public int getWordCount(final String word) {
         return wordCounter.getCount(word);
     }
 }
