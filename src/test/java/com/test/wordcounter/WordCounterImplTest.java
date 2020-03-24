@@ -1,9 +1,9 @@
 package com.test.wordcounter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +19,8 @@ public class WordCounterImplTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"flower1", "2ball", "w%indow", StringUtils.EMPTY, StringUtils.SPACE})
+    @NullAndEmptySource
+    @ValueSource(strings = {"flower1", "2ball", "w%indow"})
     void shouldThrowIllegalArgumentException(final String word) {
         WordCounter wordCounter = new WordCounterImpl();
 
